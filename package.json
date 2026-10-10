@@ -5,6 +5,9 @@
     "frontend",
     "backend"
   ],
+  "dependencies": {
+    "vite": "^8.0.16"
+  },
   "scripts": {
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
