@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "tanstack_start_ts": "file:.."
+  }
+}

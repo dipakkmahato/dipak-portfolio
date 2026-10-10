@@ -1,0 +1,16 @@
+{
+  "name": "video-to-plan-wiz",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend run build",
+    "build": "npm --prefix frontend run build && npm --prefix backend run build",
+    "install:all": "npm --prefix frontend install && npm --prefix backend install"
+  }
+}
