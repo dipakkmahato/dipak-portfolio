@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { isAllowedFrontendOrigin } from '../config/cors';
 
 export type AdminTokenPayload = {
   username: string;
@@ -42,13 +43,8 @@ export function verifyAdminToken(token: string | null | undefined) {
 
 export function requireAdmin(req: Request, res: Response, next: NextFunction) {
   if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method) && req.header("origin")) {
-    const allowedOrigins = (process.env.FRONTEND_ORIGIN ?? "http://localhost:8080")
-      .split(",")
-      .map((origin) => origin.trim())
-      .filter(Boolean);
     const origin = req.header("origin")!;
-    const isLocalOrigin = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
-    if (!allowedOrigins.includes(origin) && !isLocalOrigin) {
+    if (!isAllowedFrontendOrigin(origin)) {
       return res.status(403).json({ ok: false, error: "Forbidden origin" });
     }
   }

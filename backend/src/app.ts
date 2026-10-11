@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import { isAllowedFrontendOrigin } from "./config/cors";
 import connectDB from "./config/db";
 import authRouter from "./routes/auth";
 import adminRouter from "./routes/admin";
@@ -24,20 +25,12 @@ app.set("trust proxy", Number.isInteger(trustProxyHops) && trustProxyHops >= 0 ?
 // Connect to MongoDB
 connectDB();
 
-const allowedOrigins = (process.env.FRONTEND_ORIGIN ?? "http://localhost:8080")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-
 // Middleware
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      if (
-        allowedOrigins.includes(origin) ||
-        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
-      ) {
+      if (isAllowedFrontendOrigin(origin)) {
         return callback(null, true);
       }
       return callback(null, false);
